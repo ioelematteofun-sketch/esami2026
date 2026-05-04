@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esami Sessione Estiva 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #f5f4f0;
+    color: #1a1917;
+    min-height: 100vh;
+    padding: 2.5rem 1rem;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: -.02em;
+  }
+
+  header p {
+    font-size: .8rem;
+    color: #6b6965;
+    margin-top: .3rem;
+  }
+
+  /* FILTRI */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .filter-btn {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .72rem;
+    font-weight: 500;
+    padding: .3rem .75rem;
+    border-radius: 20px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: opacity .15s, border-color .15s;
+    background: white;
+    color: #1a1917;
+    border-color: #e4e2da;
+  }
+
+  .filter-btn .fdot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+  }
+
+  .filter-btn.active {
+    border-color: currentColor;
+  }
+
+  .filter-btn.inactive {
+    opacity: .4;
+  }
+
+  /* MESE HEADER */
+  .month-header {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #9e9b97;
+    margin: 1.75rem 0 .75rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid #e4e2da;
+  }
+
+  .month-header:first-of-type { margin-top: 0; }
+
+  /* EXAM CARD */
+  .exam-card {
+    background: white;
+    border: 1px solid #e4e2da;
+    border-radius: 12px;
+    padding: 1rem 1.125rem;
+    margin-bottom: .5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: opacity .2s;
+  }
+
+  .exam-card.hidden { display: none; }
+
+  /* DATE BLOCK */
+  .date-block {
+    flex-shrink: 0;
+    width: 42px;
+    text-align: center;
+  }
+
+  .date-day {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #1a1917;
+  }
+
+  .date-month {
+    font-size: .65rem;
+    font-weight: 500;
+    color: #9e9b97;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: 2px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 1px;
+    align-self: stretch;
+    background: #e4e2da;
+    flex-shrink: 0;
+  }
+
+  /* EXAM INFO */
+  .exam-info { flex: 1; min-width: 0; }
+
+  .exam-name {
+    font-size: .875rem;
+    font-weight: 500;
+    color: #1a1917;
+    line-height: 1.35;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    margin-top: .45rem;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    font-size: .67rem;
+    font-weight: 500;
+    padding: .2rem .55rem;
+    border-radius: 20px;
+  }
+
+  .tag-subject {
+    color: white;
+  }
+
+  .tag-appello {
+    background: #f0ede8;
+    color: #6b6965;
+  }
+
+  .tag-tipo {
+    background: #fef9ec;
+    color: #92400e;
+    border: 1px solid #fde68a;
+  }
+
+  .tag-warn {
+    background: #fff1f2;
+    color: #be123c;
+    border: 1px solid #fecdd3;
+  }
+
+  .exam-meta {
+    font-size: .75rem;
+    color: #6b6965;
+    margin-top: .45rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .2rem .75rem;
+  }
+
+  .meta-item { display: flex; align-items: center; gap: .25rem; }
+  .meta-item svg { flex-shrink: 0; }
+
+  /* OVERLAP WARNING */
+  .overlap-note {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 10px;
+    padding: .75rem 1rem;
+    font-size: .78rem;
+    color: #9a3412;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+  .overlap-note strong { font-weight: 600; }
+  .overlap-title {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #c2410c;
+    margin-bottom: .4rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Esami Sessione Estiva 2026</h1>
+    <p>Ingegneria Informatica L &nbsp;·&nbsp; Corso A &nbsp;·&nbsp; 15 giugno – 31 luglio</p>
+  </header>
+
+  <div class="overlap-note">
+    <div class="overlap-title">Attenzione</div>
+    <strong>15 giu</strong> — POO (15:00) e Algoritmi (9:00) stesso giorno &nbsp;·&nbsp;
+    <strong>29 giu</strong> — Algebra scritto e Lab. R.O. entrambi alle 9:00 &nbsp;·&nbsp;
+    <strong>15 lug</strong> — Reti Logiche e Algoritmi (2° app.) entrambi alle 9:00
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div id="list"></div>
+
+</div>
+
+<script>
+const SUBJECTS = [
+  { id:'mat1', name:'Matematica I',                          short:'Mat. I',     color:'#3b82f6' },
+  { id:'alg',  name:'Algebra lineare e mat. discreta',       short:'Algebra',    color:'#8b5cf6' },
+  { id:'poo',  name:'Programmazione OO',                     short:'POO',        color:'#10b981' },
+  { id:'lro',  name:'Lab. ricerca operativa',                short:'Lab. R.O.',  color:'#ef4444' },
+  { id:'rl',   name:'Reti logiche e calcolatori',            short:'Reti log.',  color:'#f59e0b' },
+  { id:'eco',  name:'Economia aziendale',                    short:'Economia',   color:'#06b6d4' },
+  { id:'als',  name:'Algoritmi e strutture dati',            short:'Algoritmi',  color:'#ec4899' },
+];
+
+const EXAMS = [
+  { d:'2026-06-15', s:'als',  a:1, t:'',        o:'9:00',  au:'Cubo 32B – AU_0089', doc:'FURFARO ANGELO' },
+  { d:'2026-06-15', s:'poo',  a:1, t:'',        o:'15:00', au:'Cubo 32B – AU_0087', doc:'FURFARO ANGELO' },
+  { d:'2026-06-23', s:'rl',   a:1, t:'',        o:'9:00',  au:'Cubo 32B – AU_0087', doc:'ANGIULLI FABRIZIO' },
+  { d:'2026-06-25', s:'eco',  a:1, t:'',        o:'9:00',  au:'Cubo 43B – AU_0100', doc:'SICOLI GRAZIELLA' },
+  { d:'2026-06-29', s:'alg',  a:1, t:'Scritto', o:'9:00',  au:'Cubo 32B – AU_0087', doc:'KVASOV Dmitry' },
+  { d:'2026-06-29', s:'lro',  a:1, t:'',        o:'9:00',  au:'Cubo 39C – AU_0097', doc:'MIGLIONICO Giovanna' },
+  { d:'2026-07-01', s:'mat1', a:1, t:'',        o:'15:00', au:'Cubo 32B – AU_0087', doc:'CIOLLI FABIO' },
+  { d:'2026-07-02', s:'alg',  a:1, t:'Orale',   o:'9:00',  au:'Cubo 43B – AU_0099', doc:'KVASOV Dmitry' },
+  { d:'2026-07-03', s:'poo',  a:2, t:'',        o:'9:00',  au:'Cubo 32B – AU_0087', doc:'FURFARO ANGELO' },
+  { d:'2026-07-15', s:'rl',   a:2, t:'',        o:'9:00',  au:'Cubo 32B – AU_0087', doc:'ANGIULLI FABRIZIO' },
+  { d:'2026-07-15', s:'als',  a:2, t:'',        o:'9:00',  au:'Cubo 32B – AU_0089', doc:'GRECO Claudia' },
+  { d:'2026-07-17', s:'alg',  a:2, t:'Scritto', o:'9:00',  au:'Cubo 32B – AU_0087', doc:'KVASOV Dmitry' },
+  { d:'2026-07-22', s:'alg',  a:2, t:'Orale',   o:'9:00',  au:'Cubo 32B – AU_0088', doc:'KVASOV Dmitry' },
+  { d:'2026-07-22', s:'lro',  a:2, t:'',        o:'9:00',  au:'Cubo 39C – AU_0097', doc:'MIGLIONICO Giovanna' },
+  { d:'2026-07-23', s:'mat1', a:2, t:'',        o:'15:00', au:'Cubo 41B – AU_0106', doc:'CIOLLI FABIO' },
+  { d:'2026-07-24', s:'eco',  a:2, t:'',        o:'9:00',  au:'Cubo 32B – AU_0089', doc:'SICOLI GRAZIELLA' },
+];
+
+const OVERLAP = new Set(['2026-06-15','2026-06-29','2026-07-15']);
+
+const sub = id => SUBJECTS.find(x => x.id === id);
+
+const MONTHS = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const SHORT_MONTHS = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+
+function parseDate(ds) {
+  const [y, m, d] = ds.split('-').map(Number);
+  return { y, m, d };
+}
+
+// active filters — null means all shown
+const active = new Set(SUBJECTS.map(s => s.id));
+
+function icon(type) {
+  if (type === 'clock') return `<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="7"/><path d="M8 4.5v3.75l2.5 1.5"/></svg>`;
+  if (type === 'map')   return `<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z"/><circle cx="8" cy="6" r="1.5"/></svg>`;
+  if (type === 'user')  return `<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="5.5" r="2.5"/><path d="M2 13.5c0-3 2.7-5 6-5s6 2 6 5"/></svg>`;
+}
+
+function render() {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  let currentMonth = null;
+
+  EXAMS.forEach(e => {
+    if (!active.has(e.s)) return;
+
+    const { m, d } = parseDate(e.d);
+    const monthKey = m;
+
+    if (monthKey !== currentMonth) {
+      currentMonth = monthKey;
+      const mh = document.createElement('div');
+      mh.className = 'month-header';
+      mh.textContent = MONTHS[m - 1] + ' 2026';
+      list.appendChild(mh);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'exam-card';
+
+    // Date block
+    const dateBlock = document.createElement('div');
+    dateBlock.className = 'date-block';
+    dateBlock.innerHTML = `<div class="date-day">${d}</div><div class="date-month">${SHORT_MONTHS[m-1]}</div>`;
+    card.appendChild(dateBlock);
+
+    // Divider
+    const div = document.createElement('div');
+    div.className = 'divider';
+    card.appendChild(div);
+
+    // Info
+    const info = document.createElement('div');
+    info.className = 'exam-info';
+
+    const s = sub(e.s);
+    info.innerHTML = `<div class="exam-name">${s.name === 'Programmazione OO' ? 'Programmazione orientata agli oggetti' : s.name}</div>`;
+
+    const tags = document.createElement('div');
+    tags.className = 'tags';
+
+    const subTag = document.createElement('span');
+    subTag.className = 'tag tag-subject';
+    subTag.style.background = s.color;
+    subTag.textContent = s.short;
+    tags.appendChild(subTag);
+
+    const appTag = document.createElement('span');
+    appTag.className = 'tag tag-appello';
+    appTag.textContent = e.a + '° appello';
+    tags.appendChild(appTag);
+
+    if (e.t) {
+      const tipoTag = document.createElement('span');
+      tipoTag.className = 'tag tag-tipo';
+      tipoTag.textContent = e.t;
+      tags.appendChild(tipoTag);
+    }
+
+    if (OVERLAP.has(e.d)) {
+      const warnTag = document.createElement('span');
+      warnTag.className = 'tag tag-warn';
+      warnTag.textContent = 'Sovrapposizione';
+      tags.appendChild(warnTag);
+    }
+
+    info.appendChild(tags);
+
+    const meta = document.createElement('div');
+    meta.className = 'exam-meta';
+    meta.innerHTML = `
+      <span class="meta-item">${icon('clock')} Ore ${e.o}</span>
+      <span class="meta-item">${icon('map')} ${e.au}</span>
+      <span class="meta-item">${icon('user')} ${e.doc}</span>
+    `;
+    info.appendChild(meta);
+
+    card.appendChild(info);
+    list.appendChild(card);
+  });
+}
+
+function buildFilters() {
+  const container = document.getElementById('filters');
+  SUBJECTS.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn active';
+    btn.dataset.id = s.id;
+    btn.innerHTML = `<span class="fdot" style="background:${s.color}"></span>${s.short}`;
+    btn.addEventListener('click', () => {
+      if (active.has(s.id)) {
+        active.delete(s.id);
+        btn.classList.remove('active');
+        btn.classList.add('inactive');
+      } else {
+        active.add(s.id);
+        btn.classList.add('active');
+        btn.classList.remove('inactive');
+      }
+      render();
+    });
+    container.appendChild(btn);
+  });
+}
+
+buildFilters();
+render();
+</script>
+</body>
+</html>
